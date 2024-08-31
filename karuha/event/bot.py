@@ -45,6 +45,7 @@ class BotInitEvent(BotEvent):
             self.bot.restart()
             return
         if not bot._needs_login:
+            BotReadyEvent.new(bot)
             return
         retry = bot.server.retry if bot.server is not None else 0
         for i in range(retry):
