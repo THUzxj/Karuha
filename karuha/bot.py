@@ -918,9 +918,10 @@ class Bot(object):
         self.server = server_config
         try:
             yield channel
-        except grpc.RpcError:
+        except grpc.RpcError as e:
             self.logger.error(f"disconnected from {server_config.host}, retrying...", exc_info=sys.exc_info())
             await asyncio.sleep(0.5)
+            raise e
         except asyncio.CancelledError:
             if self.state == State.restarting:
                 # uncancel from Bot.restart()

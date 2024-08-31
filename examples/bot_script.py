@@ -58,7 +58,8 @@ async def main():
     with contextlib.suppress(NotImplementedError):
         _loop.add_signal_handler(signal.SIGTERM, _handle_sigterm)
 
-    for i in range(153, 160):
+    start = 269
+    for i in range(start, start+1):
         print("i:", i)
         # create a bot without login
         bot = Bot.from_config(config.bots[0], config)
