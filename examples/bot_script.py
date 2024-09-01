@@ -40,6 +40,7 @@ async def run_create_account(bot: Bot, name: str):
             do_login=True
         )
         print(tid, params)
+        return tid, params
     except KaruhaBotError as e:
         print(e)
 
@@ -58,7 +59,7 @@ async def main():
     with contextlib.suppress(NotImplementedError):
         _loop.add_signal_handler(signal.SIGTERM, _handle_sigterm)
 
-    start = 269
+    start = 290
     for i in range(start, start+1):
         print("i:", i)
         # create a bot without login
@@ -67,7 +68,10 @@ async def main():
         print("BOT prepare finished")
         task_loop = _loop.create_task(run_bot_loop(bot))
         await _loop.create_task(run_bot_init(bot))
-        await _loop.create_task(run_create_account(bot, f'test{i}'))
+        task_create =  _loop.create_task(run_create_account(bot, f'test{i}'))
+        await task_create
+        tid, params = task_create.result()
+        print(tid, params)
         bot.cancel()
 
 if __name__ == "__main__":
